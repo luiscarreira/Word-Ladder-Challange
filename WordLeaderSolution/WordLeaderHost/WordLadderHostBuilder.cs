@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
@@ -6,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WordLadderDomain.Repositories;
+using WordLadderDomain.Services;
 using WordLadderFileSystemInfrastructure.Repositories;
 
 namespace WordLadderHost
@@ -32,7 +34,7 @@ namespace WordLadderHost
 
             IHostBuilder builder = Host.CreateDefaultBuilder(args);
 
-            //AddConfiguration(builder, args);
+            AddConfiguration(builder, args);
             //AddLogging(builder);
             //AddOptions(builder);
             AddServices(builder);
@@ -44,6 +46,19 @@ namespace WordLadderHost
         }
 
         /// <summary>
+        /// Add configuration files and environment variables to the HostBuilder.
+        /// </summary>
+        /// <param name="hostBuilder">Shared HostBuilder under configuration.</param>
+        /// <param name="args">Command line arguments passed when program is executed.</param>
+        private static void AddConfiguration(IHostBuilder hostBuilder, string[] args) =>
+          hostBuilder.ConfigureAppConfiguration(builder =>
+          {
+              builder
+              .AddJsonFile("appsettings.json", false, true)
+              .AddCommandLine(args);
+          });
+
+        /// <summary>
         /// Registers concrete implementations of services used by the application.
         /// </summary>
         /// <param name="hostBuilder">Shared HostBuilder under configuration.</param>
@@ -52,7 +67,9 @@ namespace WordLadderHost
             .ConfigureServices(services =>
             {
                 services.AddScoped<IDictionaryRepository, DictionaryRepository>(x => new DictionaryRepository(_dictionaryPath));
-                services.AddScoped<IPathRepository, PathRepository>(x => new PathRepository(_resultPath));                
+                services.AddScoped<IPathRepository, PathRepository>(x => new PathRepository(_resultPath));
+
+                services.AddScoped<IWordLadderRunner, WordLadderRunner>();
             });
     }
 }

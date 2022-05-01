@@ -1,10 +1,10 @@
 ﻿namespace WordLadderDomain.Models
 {
-    public class Path
+    public class WordPath
     {
-        public IReadOnlyList<Word> Words { get; private set; }
+        public IList<Word> Words { get; private set; }
 
-        public Path()
+        public WordPath()
         {
             Words = new List<Word>();
         }

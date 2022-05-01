@@ -1,5 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using WordLadderDomain.Services;
 using WordLadderHost;
 
 var startWord = string.Empty;
@@ -117,12 +119,17 @@ try
     await host.StartAsync(cancellationToken).ConfigureAwait(false);
 
     // A scope is required so that Runner class can use scoped lifetime services.
-    //await using (AsyncServiceScope scope = host.Services.CreateAsyncScope())
-    //{
-    //    // Main logic of the app is in "RunAsync" method of "Runner" instance.
-    //    Runner runner = ActivatorUtilities.GetServiceOrCreateInstance<Runner>(scope.ServiceProvider);
-    //    await runner.RunAsync(cancellationToken).ConfigureAwait(false);
-    //}
+    await using (AsyncServiceScope scope = host.Services.CreateAsyncScope())
+    {
+        // Main logic of the app is in "RunAsync" method of "Runner" instance.
+        var runner = ActivatorUtilities.GetServiceOrCreateInstance<IWordLadderRunner>(scope.ServiceProvider);
+        await runner.RunAsync(startWord, endword, cancellationToken);
+
+        Console.WriteLine("Path Calculated and saved.");
+        Console.WriteLine("Press any key to close.");
+        Console.ReadKey();
+        cancellationTokenSource.Cancel();
+    }
 
     await host.WaitForShutdownAsync(cancellationToken).ConfigureAwait(false);
 }

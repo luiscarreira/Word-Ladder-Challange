@@ -14,7 +14,7 @@
 
         public WordLadderDictionary(IReadOnlyList<string> dicitonaryEntries)
         {
-            DictionaryEntries = dicitonaryEntries;
+            DictionaryEntries = dicitonaryEntries.Select(x => x.ToUpper()).ToList();
         }
     }
 }

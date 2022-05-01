@@ -9,6 +9,6 @@ namespace WordLadderDomain.Repositories
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        public Task PersistPathAsync(Models.Path path);
+        public Task PersistPathAsync(WordPath path);
     }
 }

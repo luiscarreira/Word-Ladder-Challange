@@ -16,7 +16,7 @@ namespace WordLadderFileSystemInfrastructure.Repositories
             this.pathFilePath = pathFilePath;
         }
 
-        public async Task PersistPathAsync(WordLadderDomain.Models.Path path)
+        public async Task PersistPathAsync(WordPath path)
         {
             if(string.IsNullOrEmpty(pathFilePath))
             {
@@ -28,7 +28,7 @@ namespace WordLadderFileSystemInfrastructure.Repositories
                 throw new ArgumentNullException(nameof(path));
             }
 
-            await File.WriteAllLinesAsync(pathFilePath, path.Words.Select(x => x.Value));
+            await File.WriteAllLinesAsync(pathFilePath + "\\result.txt", path.Words.Select(x => x.Value));
         }
     }
 }
