@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WordLadderDomain.Services
+namespace WordLadderBusiness.Contracts
 {
     public interface IWordLadderRunner
     {

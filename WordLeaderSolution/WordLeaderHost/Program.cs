@@ -1,6 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using WordLadderBusiness.Contracts;
 using WordLadderDomain.Services;
 using WordLadderHost;
 
@@ -125,7 +126,7 @@ try
         var runner = ActivatorUtilities.GetServiceOrCreateInstance<IWordLadderRunner>(scope.ServiceProvider);
         await runner.RunAsync(startWord, endword, cancellationToken);
 
-        Console.WriteLine("Path Calculated and saved.");
+        Console.WriteLine();
         Console.WriteLine("Press any key to close.");
         Console.ReadKey();
         cancellationTokenSource.Cancel();

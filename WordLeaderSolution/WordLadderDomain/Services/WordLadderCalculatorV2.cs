@@ -3,8 +3,16 @@ using WordLadderDomain.Models;
 
 namespace WordLadderDomain.Services
 {
-    public class WordLadderCalculator
+    public class WordLadderCalculatorV2
     {
+        private readonly WordBucketService _wordBucketService;
+
+
+        public WordLadderCalculatorV2()
+        {
+            _wordBucketService = new WordBucketService();
+        }
+
         public WordPath CalculateFastestPath(string startWord, string endWord, WordLadderDictionary dictionary)
         {
             //Verifications
@@ -23,9 +31,18 @@ namespace WordLadderDomain.Services
                 throw new ArgumentException("End word does not exist on dictionary.");
             }
 
+            _wordBucketService.GenerateWordBucketsForWordsWithOnlyLetters(dictionary, startWord.Length);
+
+            var startBuckets = _wordBucketService.GetMatchingBucketsForWord(new Word(startWord));
+
+
+
+
+
+
             var result = new WordPath();
 
-          //  result.Words.Add(new Word(startWord, CountNumberOfMacthingChars(startWord, endWord)));
+            //result.Words.Add(new Word(startWord, CountNumberOfMacthingChars(startWord, endWord)));
 
             result = Calculate(startWord, endWord, dictionary, result);
 
@@ -63,7 +80,7 @@ namespace WordLadderDomain.Services
                 }
             }
 
-           // path.Words.Add(new Word(bestWord, bestScore));
+            //path.Words.Add(new Word(bestWord, bestScore));
             return Calculate(bestWord, toWord, dictionary, path);
         }
 

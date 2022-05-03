@@ -14,7 +14,12 @@
 
         public WordLadderDictionary(IReadOnlyList<string> dicitonaryEntries)
         {
-            DictionaryEntries = dicitonaryEntries.Select(x => x.ToUpper()).ToList();
+            DictionaryEntries = dicitonaryEntries.Where(x => x.Length == 4).Select(x => x.ToUpper()).ToList();
+        }
+
+        public bool ContainsWord(string word)
+        {
+            return DictionaryEntries.Contains(word);
         }
     }
 }
