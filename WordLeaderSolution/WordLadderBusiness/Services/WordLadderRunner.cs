@@ -1,7 +1,7 @@
 ﻿using WordLadderBusiness.Contracts;
 using WordLadderDomain.Exceptions;
+using WordLadderDomain.Models;
 using WordLadderDomain.Repositories;
-using WordLadderDomain.Services;
 
 namespace WordLadderBusiness.Services
 {
@@ -16,17 +16,18 @@ namespace WordLadderBusiness.Services
             this.pathRepository = pathRepository;
         }
 
-        public async Task RunAsync(string startWord, string endWord, CancellationToken token)
+        /// <inheritdoc/>
+        public async Task RunAsync(IWordLadderSolver solver, string startString, string endString, int maxWordLenghtAllowed, CancellationToken token)
         {
-            var dictionary = await dictionaryRepository.LoadDictionaryAsync();
+            token.ThrowIfCancellationRequested();
+
+            var dictionary = await dictionaryRepository.LoadDictionaryAsync(maxWordLenghtAllowed);
 
             try
             {
-                var t = new GraphRunner();
-                var result = t.BuildGraph(startWord.ToUpper(), endWord.ToUpper(), dictionary);
-                
-                //var f = new WordLadderCalculatorV2();
-                //var result = f.CalculateFastestPath(startWord.ToUpper(), endWord.ToUpper(), dictionary);
+                Word startWord = new Word(startString);
+                Word endWord = new Word(endString);
+                var result = solver.SolveWordLadder(startWord, endWord, dictionary);
 
                 if (result != null)
                 {
@@ -42,8 +43,13 @@ namespace WordLadderBusiness.Services
             {
                 Console.WriteLine($"ERROR: {ex.Message}");
             }
-
             
+        }
+
+        /// <inheritdoc/>
+        public async Task RunAsync(IWordLadderSolver solver, string startString, string endString, CancellationToken token)
+        {
+            await RunAsync(solver, startString, endString, Int32.MaxValue, token);
         }
     }
 }

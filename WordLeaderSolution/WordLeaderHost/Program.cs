@@ -1,12 +1,9 @@
-﻿// See https://aka.ms/new-console-template for more information
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using WordLadderBusiness.Contracts;
-using WordLadderDomain.Services;
-using WordLadderHost;
+﻿using WordLadderHost;
+using WordLadderBusiness.Validators;
+using WordLadderHost.Data;
 
 var startWord = string.Empty;
-var endword = string.Empty;
+var endWord = string.Empty;
 var dictionaryPath = string.Empty;
 var resultPath = string.Empty;
 
@@ -26,7 +23,7 @@ foreach(var arg in args)
             input = arg[3..];
             if (ArgumentsValidator.IsWordValid(input, "-E"))
             {
-                endword = input;
+                endWord = input;
             }
             break;
         case "-D":
@@ -70,14 +67,14 @@ while(startWordIsSet == false)
 }
 
 
-var endWordIsSet = !string.IsNullOrEmpty(endword);
+var endWordIsSet = !string.IsNullOrEmpty(endWord);
 
 while (endWordIsSet == false)
 {
     Console.WriteLine("End Word:");
     var input = Console.ReadLine();
     endWordIsSet = ArgumentsValidator.IsWordValid(input);
-    endword = input;
+    endWord = input;
 }
 
 var dictionaryPathIsSet = !string.IsNullOrEmpty(dictionaryPath);
@@ -103,51 +100,19 @@ while (resultPathIsSet == false)
 Console.Clear();
 Console.WriteLine("Word Ladder - Inputs Summary:");
 Console.WriteLine("Start word: " + startWord);
-Console.WriteLine("End word: " + endword);
+Console.WriteLine("End word: " + endWord);
 Console.WriteLine("Dictionary path: " + dictionaryPath);
 Console.WriteLine("Result path: " + resultPath);
 Console.WriteLine();
 Console.WriteLine("Press any key to start execution!");
 Console.ReadKey();
 
-IHost? host = default;
-CancellationTokenSource cancellationTokenSource = new();
-CancellationToken cancellationToken = cancellationTokenSource.Token;
-//ConfigureCancellationOnUserRequest(cancellationTokenSource);
-try
+if (startWord != null && endWord != null && dictionaryPath != null && resultPath != null)
 {
-    host = WordLadderHostBuilder.Build(args, dictionaryPath, resultPath);
-    await host.StartAsync(cancellationToken).ConfigureAwait(false);
-
-    // A scope is required so that Runner class can use scoped lifetime services.
-    await using (AsyncServiceScope scope = host.Services.CreateAsyncScope())
-    {
-        // Main logic of the app is in "RunAsync" method of "Runner" instance.
-        var runner = ActivatorUtilities.GetServiceOrCreateInstance<IWordLadderRunner>(scope.ServiceProvider);
-        await runner.RunAsync(startWord, endword, cancellationToken);
-
-        Console.WriteLine();
-        Console.WriteLine("Press any key to close.");
-        Console.ReadKey();
-        cancellationTokenSource.Cancel();
-    }
-
-    await host.WaitForShutdownAsync(cancellationToken).ConfigureAwait(false);
+    var argumentsDto = new ArgumentsDto(startWord, endWord, dictionaryPath, resultPath, 4);
+    await WordLadderScopedExecution.Execute(args, argumentsDto);
 }
-catch (TaskCanceledException)
+else
 {
-    //AnsiConsole.Write("\n\n");
-}
-catch (Exception ex)
-{
-    //AnsiConsole.WriteException(ex, ExceptionFormats.ShortenEverything);
-}
-finally
-{
-    cancellationTokenSource?.Dispose();
-
-    if (host is IAsyncDisposable disposableHost)
-    {
-        await disposableHost.DisposeAsync().ConfigureAwait(false);
-    }
+    Console.WriteLine("ERROR: Inputs are missing!");
 }

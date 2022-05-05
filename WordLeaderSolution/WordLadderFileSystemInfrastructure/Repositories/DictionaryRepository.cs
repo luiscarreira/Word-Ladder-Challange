@@ -18,10 +18,10 @@ namespace WordLadderFileSystemInfrastructure.Repositories
         }
 
         /// <inheritdoc/>
-        public async Task<WordLadderDictionary> LoadDictionaryAsync()
+        public async Task<WordLadderDictionary> LoadDictionaryAsync(int maxWordLenghtAllowed = Int32.MaxValue)
         {
             var fileLines = await File.ReadAllLinesAsync(dictionaryFilePath, Encoding.UTF8);
-            return new WordLadderDictionary(fileLines);
+            return new WordLadderDictionary(fileLines, maxWordLenghtAllowed);
         }
     }
 }

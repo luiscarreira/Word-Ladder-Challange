@@ -1,10 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using WordLadderBusiness.Contracts;
-using WordLadderBusiness.Services;
-using WordLadderDomain.Repositories;
-using WordLadderFileSystemInfrastructure.Repositories;
+using WordLadderHost.DependencyInjection;
 
 namespace WordLadderHost
 {
@@ -24,15 +21,12 @@ namespace WordLadderHost
         /// <returns>An initialized IHost.</returns>
         public static IHost Build(string[] args, string dictionaryPath, string resultPath)
         {
-            //Guard.Against.Null(args, nameof(args));
             _dictionaryPath = dictionaryPath;
             _resultPath = resultPath;
 
             IHostBuilder builder = Host.CreateDefaultBuilder(args);
 
             AddConfiguration(builder, args);
-            //AddLogging(builder);
-            //AddOptions(builder);
             AddServices(builder);
 
             builder.UseConsoleLifetime();
@@ -62,10 +56,8 @@ namespace WordLadderHost
           hostBuilder
             .ConfigureServices(services =>
             {
-                services.AddScoped<IDictionaryRepository, DictionaryRepository>(x => new DictionaryRepository(_dictionaryPath));
-                services.AddScoped<IPathRepository, PathRepository>(x => new PathRepository(_resultPath));
-
-                services.AddScoped<IWordLadderRunner, WordLadderRunner>();
+                FileSystemInfrastructureDependecyInjectionConfiguration.LoadServices(services, _dictionaryPath, _resultPath);
+                BusinessDependencyInjectionConfiguration.LoadServices(services);
             });
     }
 }

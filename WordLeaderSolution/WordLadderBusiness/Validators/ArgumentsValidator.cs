@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace WordLadderHost
+﻿namespace WordLadderBusiness.Validators
 {
-    internal static class ArgumentsValidator
+    public static class ArgumentsValidator
     {
-        internal static bool IsWordValid(string? word, string? argumentIdentifier = null)
+        /// <summary>
+        /// Validate if the Word is Valid
+        /// </summary>
+        /// <param name="word"></param>
+        /// <param name="argumentIdentifier"></param>
+        /// <returns></returns>
+        public static bool IsWordValid(string? word, string? argumentIdentifier = null)
         {
             bool result = false;
             if (word != null && word.Length == 4 && !word.Contains(' '))
@@ -26,7 +26,7 @@ namespace WordLadderHost
             return result;
         }
 
-        internal static bool IsFilePathValid(string? path, string? argumentIdentifier = null)
+        public static bool IsFilePathValid(string? path, string? argumentIdentifier = null)
         {
             bool result = File.Exists(path);
 
@@ -41,7 +41,7 @@ namespace WordLadderHost
             return result;
         }
 
-        internal static bool IsDirectoryPathValid(string? path, string? argumentIdentifier = null)
+        public static bool IsDirectoryPathValid(string? path, string? argumentIdentifier = null)
         {
             bool result = Directory.Exists(path);
 

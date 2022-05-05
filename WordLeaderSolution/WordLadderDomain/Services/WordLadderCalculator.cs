@@ -1,14 +1,15 @@
 ﻿using WordLadderDomain.Exceptions;
+using WordLadderDomain.Extentions;
 using WordLadderDomain.Models;
 
 namespace WordLadderDomain.Services
 {
     public class WordLadderCalculator
     {
-        public WordPath CalculateFastestPath(string startWord, string endWord, WordLadderDictionary dictionary)
+        public WordPath CalculateFastestPath(Word startWord, Word endWord, WordLadderDictionary dictionary)
         {
             //Verifications
-            if(startWord.Length != endWord.Length)
+            if(startWord.Value.Length != endWord.Value.Length)
             {
                 throw new ArgumentException("Start and End words must have the same size.");
             }
@@ -25,36 +26,32 @@ namespace WordLadderDomain.Services
 
             var result = new WordPath();
 
-          //  result.Words.Add(new Word(startWord, CountNumberOfMacthingChars(startWord, endWord)));
-
             result = Calculate(startWord, endWord, dictionary, result);
 
             return result;
         }
 
-        private WordPath? Calculate(string fromWord, string toWord, WordLadderDictionary dictionary, WordPath path)
+        private WordPath? Calculate(Word fromWord, Word toWord, WordLadderDictionary dictionary, WordPath path)
         {
-            if (fromWord == toWord)
+            if (fromWord.IsEqual(toWord))
             {
                 return path;
             }
 
-            var words = GetWordsFromDictionaryThatDiffersOnlyOneLetter(fromWord, dictionary, path.Words.Select(x => x.Value).ToList());
+            var words = dictionary.GetWordsThatDifferGivenNumberOfLetters(fromWord, 1, path.Words);
 
             if(words.Count == 0)
             {
                 return null;
-                //End of dictionary
-                //throw new NoWordLadderFoundException("No path found between Start and End words using the current dictionary.");
             }
 
             //Choose the best words in each iteration from dictionary (the one closest to the goal word)
-            var bestWord = string.Empty;
+            Word bestWord = new Word(String.Empty);
             var bestScore = 0;
 
             foreach (var word in words)
             {
-                var score = CountNumberOfMacthingChars(word, toWord);
+                var score = word.NumberOfMacthingChars(toWord);
 
                 if (score > bestScore)
                 {
@@ -63,38 +60,7 @@ namespace WordLadderDomain.Services
                 }
             }
 
-           // path.Words.Add(new Word(bestWord, bestScore));
             return Calculate(bestWord, toWord, dictionary, path);
-        }
-
-
-        private IReadOnlyList<string> GetWordsFromDictionaryThatDiffersOnlyOneLetter(
-            string word, 
-            WordLadderDictionary dictionary,
-            List<string> excludedWords)
-        {
-            var result = new List<string>();
-
-            foreach(string dictionaryWord in dictionary.DictionaryEntries.Except(excludedWords))
-            {
-                var numberOfChanges = dictionaryWord.Length - CountNumberOfMacthingChars(word, dictionaryWord);
-                if(numberOfChanges == 1)
-                {
-                    result.Add(dictionaryWord);
-                }
-            }
-            return result;
-        }
-
-        private int CountNumberOfMacthingChars(string wordA, string wordB)
-        {
-            int result = 0;
-            if(wordA.Length == wordB.Length)
-            {
-                result = wordA.Where((x, i) => x.Equals(wordB[i])).Count();
-            }
-
-            return result;
         }
     }
 }

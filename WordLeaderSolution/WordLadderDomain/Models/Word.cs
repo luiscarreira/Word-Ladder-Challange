@@ -6,18 +6,18 @@
     public class Word
     {
         public string Value { get; private set; }
-        //public int MatchingLettersCount { get; private set; }
+
+        private string OriginalValue { get; set; }
 
         public Word()
         {
-            Value = string.Empty;
-            //MatchingLettersCount = 0;
+            Value = OriginalValue = string.Empty;
         }
 
-        public Word(string value/*, int matchingLettersCount*/)
+        public Word(string value)
         {
-            Value = value;
-            //MatchingLettersCount = matchingLettersCount;
+            OriginalValue = value;
+            Value = value.ToUpper();
         }
     }
 }
