@@ -16,6 +16,11 @@ namespace WordLadderDomain.Models
         /// <param name="maxWordLenghtAllowed">The max word lenght allowed (it defaults to Int32 max length)</param>
         public WordLadderDictionary(IReadOnlyList<string> dicitonaryEntries, int maxWordLenghtAllowed = Int32.MaxValue)
         {
+            if(dicitonaryEntries == null)
+            {
+                throw new ArgumentNullException(nameof(dicitonaryEntries));
+            }
+
             IEnumerable<string> filtredDictionartEntries;
             if (maxWordLenghtAllowed == Int32.MaxValue)
             {

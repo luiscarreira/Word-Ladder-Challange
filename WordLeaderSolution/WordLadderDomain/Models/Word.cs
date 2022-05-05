@@ -7,16 +7,13 @@
     {
         public string Value { get; private set; }
 
-        private string OriginalValue { get; set; }
-
         public Word()
         {
-            Value = OriginalValue = string.Empty;
+            Value = string.Empty;
         }
 
         public Word(string value)
         {
-            OriginalValue = value;
             Value = value.ToUpper();
         }
     }
