@@ -1,5 +1,4 @@
 ﻿using WordLadderBusiness.Contracts;
-using WordLadderDomain.Exceptions;
 using WordLadderDomain.Models;
 using WordLadderDomain.Repositories;
 
@@ -29,7 +28,7 @@ namespace WordLadderBusiness.Services
                 Word endWord = new Word(endString);
                 var result = solver.SolveWordLadder(startWord, endWord, dictionary);
 
-                if (result != null)
+                if (result != null && result.GetWordsInPath().Any())
                 {
                     await pathRepository.PersistPathAsync(result);
                     Console.WriteLine("Path Calculated and saved.");
@@ -39,7 +38,7 @@ namespace WordLadderBusiness.Services
                     Console.WriteLine("ERROR: No Ladder to persist.");
                 }
             }
-            catch (Exception ex) when (ex.GetType() == typeof(ArgumentException) || ex.GetType() == typeof(NoWordLadderFoundException))
+            catch (ArgumentException ex)
             {
                 Console.WriteLine($"ERROR: {ex.Message}");
             }

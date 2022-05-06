@@ -1,10 +1,12 @@
-﻿using WordLadderDomain.Models;
+﻿using System.IO.Abstractions;
+using WordLadderDomain.Models;
 using WordLadderDomain.Repositories;
 
 namespace WordLadderFileSystemInfrastructure.Repositories
 {
     public class PathRepository : IPathRepository
     {
+        private readonly IFileSystem fileSystem;
         private readonly string pathFilePath;
 
         /// <summary>
@@ -14,6 +16,17 @@ namespace WordLadderFileSystemInfrastructure.Repositories
         public PathRepository(string pathFilePath)
         {
             this.pathFilePath = pathFilePath;
+            fileSystem = new FileSystem();
+        }
+
+        /// <summary>
+        /// PathRepository constructor
+        /// </summary>
+        /// <param name="pathFilePath"></param>
+        public PathRepository(string pathFilePath, IFileSystem fileSystem)
+        {
+            this.pathFilePath = pathFilePath;
+            this.fileSystem = fileSystem;
         }
 
         public async Task PersistPathAsync(WordPath path)
@@ -28,7 +41,7 @@ namespace WordLadderFileSystemInfrastructure.Repositories
                 throw new ArgumentNullException(nameof(path));
             }
 
-            await File.WriteAllLinesAsync(pathFilePath + "\\result.txt", path.Words.Select(x => x.Value));
+            await fileSystem.File.WriteAllLinesAsync(pathFilePath + "\\result.txt", path.GetWordsInPath().Select(x => x.Value));
         }
     }
 }

@@ -9,10 +9,10 @@ namespace WordLadderDomain.Extentions
         /// </summary>
         /// <param name="wordA"></param>
         /// <param name="wordB"></param>
-        /// <returns></returns>
+        /// <returns>The Number of Matching Characters. If The words have different lenghts it returns -1.</returns>
         public static int NumberOfMacthingChars(this Word wordA, Word wordB)
         {
-            int result = 0;
+            int result = -1;
             if (wordA.Value.Length == wordB.Value.Length)
             {
                 result = wordA.Value.Where((x, i) => x.Equals(wordB.Value[i])).Count();

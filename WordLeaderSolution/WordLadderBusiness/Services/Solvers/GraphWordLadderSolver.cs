@@ -25,22 +25,21 @@ namespace WordLadderBusiness.Services.Solvers
         /// <inheritdoc/>
         public WordPath SolveWordLadder(Word startWord, Word endWord, WordLadderDictionary dictionary)
         {
-            visitedWords.Clear();
-            wordsQueue.Clear();
-            graph.Clear();
+            WordPath result = new();
 
-            wordsQueue.Enqueue(startWord);
-            graph.AddVertex(startWord);
-
-            while (wordsQueue.Count > 0)
+            if (dictionary.ContainsWord(startWord) && dictionary.ContainsWord(endWord))
             {
-                var word = wordsQueue.Dequeue();
-                GenerateNextLevelOfNodes(word, endWord, dictionary);
+                wordsQueue.Enqueue(startWord);
+                graph.AddVertex(startWord);
+
+                while (wordsQueue.Count > 0)
+                {
+                    var word = wordsQueue.Dequeue();
+                    GenerateNextLevelOfNodes(word, endWord, dictionary);
+                }
+
+                result.AppendWordsToPath(GetPath(startWord, endWord));
             }
-
-
-            WordPath result = new WordPath();
-            result.Words.AddRange(GetPath(startWord, endWord));
 
             return result;
         }
