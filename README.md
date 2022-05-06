@@ -26,6 +26,7 @@
       <a href="#getting-started">Getting Started</a>
     </li>
     <li><a href="#word-ladder-solvers">Word Ladder Solvers</a></li>
+    <li><a href="#unit-tests">Unit Tests</a></li>
     <li><a href="#contact">Contact</a></li>
   </ol>
 </details>
@@ -111,6 +112,8 @@ From here each solver is free to implement what they need.
 
 This solver was made based on the ideia of constructing a graph from the dictionary provided by the user and then search for the shortest path between start and end words. (If the words are not present in the dictionary or a path is impossible to find, it will return an empty WordPath).
 
+To avoid inventing the wheel in a data structure, I decided to use the QuikGraph library to give me a full functional graph data structure.
+
 To avoid performance issues the graph builded by this solver will not contain the full map for the provided dictionary. Instead it will be builded "per level". 
 In each level it will search the dictionary for all words with 1 different letter (taking in count their position on the word) from a pre-selected word until it receive the end word (the goal) from the dictionary). 
 To avoid treat the same word more than once, all treated words will be disconsidered from the next fetch to the dictionary.
@@ -177,7 +180,11 @@ Words already processed => [start, stars, sears, bears, seats, beats, teats, boa
 **Returned Path:**
 start -> stars -> sears -> seats -> teats -> terts -> tarts
 
+<!-- UNIT TESTS -->
+### Unit Tests
 
+To produce my unit test I used the xUnit library along side the FluentAssertions library to produce more elegant and with better legibility.  
+To allow the unit tests on the Repositories that are using the File System I resort to the System.IO.Abstraction library.
 
 <!-- CONTACT -->
 ## Contact
