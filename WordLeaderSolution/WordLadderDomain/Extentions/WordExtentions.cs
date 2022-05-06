@@ -20,16 +20,5 @@ namespace WordLadderDomain.Extentions
 
             return result;
         }
-
-        /// <summary>
-        /// Verifies is two Words are equals
-        /// </summary>
-        /// <param name="wordA"></param>
-        /// <param name="wordB"></param>
-        /// <returns></returns>
-        public static bool IsEqual(this Word wordA, Word wordB)
-        {
-            return wordA.Value.SequenceEqual(wordB.Value);
-        }
     }
 }
