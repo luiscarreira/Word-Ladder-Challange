@@ -1,4 +1,5 @@
-﻿using WordLadderDomain.Extentions;
+﻿using WordLadderDomain.Comparers;
+using WordLadderDomain.Extentions;
 
 namespace WordLadderDomain.Models
 {
@@ -41,7 +42,7 @@ namespace WordLadderDomain.Models
         /// <returns></returns>
         public bool ContainsWord(Word word)
         {
-            return DictionaryEntries.Any(x => x.IsEqual(word));
+            return DictionaryEntries.Any(x => x.Equals(word));
         }
 
         /// <summary>
@@ -58,7 +59,7 @@ namespace WordLadderDomain.Models
         {
             var result = new List<Word>();
 
-            var collectionToAnalyse = excludedWords == null ? DictionaryEntries : DictionaryEntries.Except(excludedWords);
+            var collectionToAnalyse = excludedWords == null ? DictionaryEntries : DictionaryEntries.Except(excludedWords, new WordEqualityComparer());
 
             foreach (var dictionaryWord in collectionToAnalyse)
             {

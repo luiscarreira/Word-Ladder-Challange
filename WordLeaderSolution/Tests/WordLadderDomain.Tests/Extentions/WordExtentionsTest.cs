@@ -67,48 +67,6 @@ namespace WordLadderDomain.Tests.Extentions
 
             //Assert
             result.Should().Be(-1);
-        }
-
-        [Fact]
-        public void IsEqual_WhenTwoWordsAreEqual_ShallReturnTrue()
-        {
-            //Arrange
-            var word1 = new Word("test");
-            var word2 = new Word("test");
-
-            //Act
-            var result = word1.IsEqual(word2);
-
-            //Assert
-            result.Should().Be(true);
-        }
-
-        [Fact]
-        public void IsEqual_WhenTwoWordsWithTheSameCharsInDifferentOrder_ShallReturnFalse()
-        {
-            //Arrange
-            var word1 = new Word("test");
-            var word2 = new Word("tset");
-
-            //Act
-            var result = word1.IsEqual(word2);
-
-            //Assert
-            result.Should().Be(false);
-        }
-
-        [Fact]
-        public void IsEqual_WhenTwoDifferentWords_ShallReturnFalse()
-        {
-            //Arrange
-            var word1 = new Word("test");
-            var word2 = new Word("pest");
-
-            //Act
-            var result = word1.IsEqual(word2);
-
-            //Assert
-            result.Should().Be(false);
-        }
+        }               
     }
 }

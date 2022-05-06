@@ -2,6 +2,7 @@
 using WordLadderBusiness.Contracts;
 using WordLadderDomain.Models;
 using WordLadderDomain.Extentions;
+using WordLadderDomain.Comparers;
 
 namespace WordLadderBusiness.Services.Solvers
 {
@@ -59,13 +60,16 @@ namespace WordLadderBusiness.Services.Solvers
                 graph.AddVertex(word);
                 graph.AddEdge(new Edge<Word>(fromWord, word));
 
-                if (word.IsEqual(toWord))
+                if (word.Equals(toWord))
                 {
                     wordsQueue.Clear();
                     break;
                 }
 
-                wordsQueue.Enqueue(word);
+                if (!wordsQueue.Contains(word, new WordEqualityComparer()))
+                {
+                    wordsQueue.Enqueue(word);
+                }
             }
             visitedWords.Add(fromWord);
         }
@@ -80,11 +84,11 @@ namespace WordLadderBusiness.Services.Solvers
         {
             var result = new List<Word>();
 
-            var goalVertice = graph.Vertices.FirstOrDefault(x => x.IsEqual(endWord));
+            var goalVertice = graph.Vertices.FirstOrDefault(x => x.Equals(endWord));
 
             if (goalVertice != null)
             {
-                while (!goalVertice.IsEqual(startWord))
+                while (!goalVertice.Equals(startWord))
                 {
                     result.Add(goalVertice);
                     var edge = graph.InEdge(goalVertice, 0);
