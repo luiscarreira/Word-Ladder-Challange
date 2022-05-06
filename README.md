@@ -59,7 +59,7 @@ Realizing this I went back to the original thought and start tackling the techni
 * C#
 * [Fluent Assertions (nuget package)](https://www.nuget.org/packages/FluentAssertions/6.6.0/)
 * [Moq (nuget package)](https://github.com/moq/moq4)
-* [QuilGraph (nuget package)](https://github.com/KeRNeLith/QuikGraph)
+* [QuikGraph (nuget package)](https://github.com/KeRNeLith/QuikGraph)
 * [System.IO.Abstraction (nuget package)](https://github.com/TestableIO/System.IO.Abstractions)
 * [xUnit (nuget package)](https://github.com/xunit/xunitm)
 
