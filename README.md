@@ -111,68 +111,70 @@ From here each solver is free to implement what they need.
 
 This solver was made based on the ideia of constructing a graph from the dictionary provided by the user and then search for the shortest path between start and end words. (If the words are not present in the dictionary or a path is impossible to find, it will return an empty WordPath).
 
-To avoid performance issues the graph builded by this solver will not contain the full map for the provided dictionary. Instead it will be builded "per level".\
-In each level it will search the dictionary for all words with 1 different letter (taking in count there position on the word) from a pre-selected word until it receive the end word (the goal) from the dictionary).\
+To avoid performance issues the graph builded by this solver will not contain the full map for the provided dictionary. Instead it will be builded "per level". 
+In each level it will search the dictionary for all words with 1 different letter (taking in count their position on the word) from a pre-selected word until it receive the end word (the goal) from the dictionary). 
+To avoid treat the same word more than once, all treated words will be disconsidered from the next fetch to the dictionary.
+
 To be easier to understand, lets see bellow an example:
 
-Inputs:\
-Dictionary: ["bears", "parts", "teats", "tarts", "boats", "start", "ports", "stars", "beats", "coats", "seats", "posts", "sears", "costs", "terts"]\
-Start Word: "start"\
+**Inputs**:  
+Dictionary: ["bears", "parts", "teats", "tarts", "boats", "start", "ports", "stars", "beats", "coats", "seats", "posts", "sears", "costs", "terts"]  
+Start Word: "start"  
 End Word: "tarts"
 
-Level 1\
-Word to process => start\
-Graph Nodes => [start]\
-Words from Dictionary with 1 change of letter => ["stars"]\
+**Level 1**  
+Word to process => start  
+Graph Nodes => [start]  
+Words from Dictionary with 1 change of letter => ["stars"]  
 Words already processed => [start]
 
-Level 2\
-Word to process => stars\
-Graph Nodes => [start, stars]\
-Words from Dictionary with 1 change of letter => ["sears"]\
+**Level 2**  
+Word to process => stars  
+Graph Nodes => [start, stars]  
+Words from Dictionary with 1 change of letter => ["sears"]  
 Words already processed => [start, stars]
 
-Level 3\
-Word to process => sears\
-Graph Nodes => [start, stars, sears]\
-Words from Dictionary with 1 change of letter => ["bears", "seats"]\
+**Level 3**  
+Word to process => sears  
+Graph Nodes => [start, stars, sears]  
+Words from Dictionary with 1 change of letter => ["bears", "seats"]  
 Words already processed => [start, stars, sears]
 
-Level 4\
-Word to process => bears\
-Graph Nodes => [start, stars, sears, bears]\
-Words from Dictionary with 1 change of letter => ["beats"]\
+**Level 4**  
+Word to process => bears  
+Graph Nodes => [start, stars, sears, bears]  
+Words from Dictionary with 1 change of letter => ["beats"]  
 Words already processed => [start, stars, sears, bears]
 
-Word to process => seats\
-Graph Nodes => [start, stars, sears, bears, seats]\
-Words from Dictionary with 1 change of letter => ["beats", "teats"]\
+Word to process => seats  
+Graph Nodes => [start, stars, sears, bears, seats]  
+Words from Dictionary with 1 change of letter => ["beats", "teats"]  
 Words already processed => [start, stars, sears, bears, seats]
 
-Level 5\
-Word to process => beats\
-Graph Nodes => [start, stars, sears, bears, seats, beats]\
-Words from Dictionary with 1 change of letter => ["teats", "boats"]\
+**Level 5**  
+Word to process => beats  
+Graph Nodes => [start, stars, sears, bears, seats, beats]  
+Words from Dictionary with 1 change of letter => ["teats", "boats"]  
 Words already processed => [start, stars, sears, bears, seats, beats]
 
-Word to process => teats\
-Graph Nodes => [start, stars, sears, bears, seats, beats, teats]\
-Words from Dictionary with 1 change of letter => ["terts"]\
+Word to process => teats  
+Graph Nodes => [start, stars, sears, bears, seats, beats, teats]  
+Words from Dictionary with 1 change of letter => ["terts"]  
 Words already processed => [start, stars, sears, bears, seats, beats, teats]
 
-Level 6\
-Word to process => boats\
-Graph Nodes => [start, stars, sears, bears, seats, beats, teats, boats]\
-Words from Dictionary with 1 change of letter => ["coats"]\
+**Level 6**  
+Word to process => boats  
+Graph Nodes => [start, stars, sears, bears, seats, beats, teats, boats]  
+Words from Dictionary with 1 change of letter => ["coats"]  
 Words already processed => [start, stars, sears, bears, seats, beats, teats, boats]
 
-Word to process => terts\
-Graph Nodes => [start, stars, sears, bears, seats, beats, teats, boats, terts]\
-Words from Dictionary with 1 change of letter => ["tarts"]\
+Word to process => terts  
+Graph Nodes => [start, stars, sears, bears, seats, beats, teats, boats, terts]  
+Words from Dictionary with 1 change of letter => ["tarts"]  
 Words already processed => [start, stars, sears, bears, seats, beats, teats, boats, terts]
 - Process Stops, end word found
 
-Returned Path:
+**Returned Path:**
 start -> stars -> sears -> seats -> teats -> terts -> tarts
 
 
