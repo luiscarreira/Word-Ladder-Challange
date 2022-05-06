@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "WordLeaderHost": {
+      "commandName": "Project",
+      "commandLineArgs": "-D:C:\\Users\\Admin\\Documents\\BP\\words-english.txt -O:C:\\Users\\Admin\\Documents\\BP\\result"
+    }
+  }
+}
