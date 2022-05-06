@@ -54,7 +54,7 @@ foreach(var arg in args)
     }
 }
 
-Console.WriteLine("Welcome to Word Leader application!");
+Console.WriteLine("----- Welcome to Word Leader application! -----");
 
 var startWordIsSet = !string.IsNullOrEmpty(startWord);
 
@@ -98,7 +98,7 @@ while (resultPathIsSet == false)
 }
 
 Console.Clear();
-Console.WriteLine("Word Ladder - Inputs Summary:");
+Console.WriteLine("----- Word Ladder - Inputs Summary: -----");
 Console.WriteLine("Start word: " + startWord);
 Console.WriteLine("End word: " + endWord);
 Console.WriteLine("Dictionary path: " + dictionaryPath);

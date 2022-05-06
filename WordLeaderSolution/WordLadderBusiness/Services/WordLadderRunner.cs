@@ -35,7 +35,7 @@ namespace WordLadderBusiness.Services
                 }
                 else
                 {
-                    Console.WriteLine("ERROR: No Ladder to persist.");
+                    Console.WriteLine("ERROR: No Ladder found to persist.");
                 }
             }
             catch (ArgumentException ex)

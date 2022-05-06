@@ -18,7 +18,7 @@
             else
             {
                 var errorString = "Not a valid input, it shall be 4 chars long and contain no empty space.";
-                Console.WriteLine();
+                Console.Clear();
                 Console.WriteLine($"ERROR: {(string.IsNullOrEmpty(argumentIdentifier) ? "" : $"(In argument {argumentIdentifier})")} {errorString}");
                 Console.WriteLine();
             }           
@@ -33,7 +33,7 @@
             if (!result)
             {
                 var errorString = "The file is not valid or not accessible.";
-                Console.WriteLine();
+                Console.Clear();
                 Console.WriteLine($"ERROR: {(string.IsNullOrEmpty(argumentIdentifier) ? "" : $"(In argument {argumentIdentifier})")} {errorString}");
                 Console.WriteLine();
             }
@@ -48,7 +48,7 @@
             if (!result)
             {
                 var errorString = "The folder path is not valid or not accessible.";
-                Console.WriteLine();
+                Console.Clear();
                 Console.WriteLine($"ERROR: {(string.IsNullOrEmpty(argumentIdentifier) ? "" : $"(In argument {argumentIdentifier})")} {errorString}");
                 Console.WriteLine();
             }
